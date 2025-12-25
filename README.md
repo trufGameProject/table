@@ -23,10 +23,12 @@ ScoreSouth: int
 ScoreEast: int
 ```
 
-API reference:
+API reference (all results are in JSON):
 
 - `GET /table/` list tableIds and status
 - `GET /table/{id}` detail table information
-- `GET /table/?type={type}` table of specific types
+- `GET /table/?type={tableStatus}` table of specific types
 - `POST /table` new table
-- `PATCH /table/{id}/player/{pid}` adding a player to a certain position (NWSE)
+- `DELETE /table/{id}` delete the table
+- `PATCH /table/{id}/position/{position}` - data used: `player: {pid}` adding a player to a certain position (NWSE)
+- `PATCH /table/{id}/status/{tableStatus}` change the table status
