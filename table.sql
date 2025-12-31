@@ -1,4 +1,4 @@
-CREATE TABLE [table] (
+CREATE TABLE myTable (
     -- Table ID
     tableId CHAR(32) PRIMARY KEY,
     
@@ -18,5 +18,5 @@ CREATE TABLE [table] (
     ScoreNorth INT DEFAULT 0,
     ScoreWest INT DEFAULT 0,
     ScoreSouth INT DEFAULT 0,
-    ScoreEast INT DEFAULT 0,
+    ScoreEast INT DEFAULT 0
 );

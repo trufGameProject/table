@@ -26,7 +26,7 @@ public class TableApplication {
 
 	@GetMapping("/table/")
 	public String listTables() {
-		String sql = "SELECT * FROM table";
+		String sql = "SELECT * FROM myTable";
     
 		List<TableEntity> listTables = jdbcTemplate.query(sql,
 					BeanPropertyRowMapper.newInstance(TableEntity.class));
@@ -43,7 +43,7 @@ public class TableApplication {
 
 	@GetMapping("/table/{id}")
 	public String tableInfo(@PathVariable String id) {
-		String sql = "SELECT * FROM table WHERE tableId = ?";
+		String sql = "SELECT * FROM myTable WHERE tableId = ?";
     	TableEntity table = jdbcTemplate.queryForObject(sql,
         BeanPropertyRowMapper.newInstance(TableEntity.class), id);
     	
@@ -52,7 +52,7 @@ public class TableApplication {
 
 	@PostMapping("/table")
 	public String createTable(@RequestParam String tableId, @RequestParam int tableStatus) {
-		String sql = "INSERT INTO table (tableId, tableStatus) VALUES (?, ?)";
+		String sql = "INSERT INTO myTable (tableId, tableStatus) VALUES (?, ?)";
         int result = jdbcTemplate.update(sql, tableId, tableStatus);
         
         if (result > 0) {
