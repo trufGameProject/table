@@ -1,17 +1,17 @@
 package com.trufGameProject.table;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.util.List;
 
 @RestController
 @SpringBootApplication
@@ -30,14 +30,14 @@ public class TableApplication {
     
 		List<TableEntity> listTables = jdbcTemplate.query(sql,
 					BeanPropertyRowMapper.newInstance(TableEntity.class));
-		String JSONString = "{";
+		String JSONString = "[";
 		for (TableEntity tables : listTables) {
-			if (!JSONString.equals("{")) {
+			if (!JSONString.equals("[")) {
 				JSONString += ", ";
 			}
 			JSONString += tables.toJSON();
 		}
-		JSONString += "}";
+		JSONString += "]";
 		return JSONString;
 	}
 
@@ -49,6 +49,9 @@ public class TableApplication {
     	
 		return table.toJSON();
 	}
+
+	@GetMapping("/table/?type={tableStatus}")
+	// public String getTableofStatus() {}
 
 	@PostMapping("/table")
 	public String createTable(@RequestParam String tableId, @RequestParam int tableStatus) {

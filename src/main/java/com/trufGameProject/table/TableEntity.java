@@ -1,31 +1,31 @@
 package com.trufGameProject.table;
 
 public class TableEntity {
-    private String tableId;
-    private int tableStatus;
-    private String North;
-    private String West;
-    private String South;
-    private String East;
-    private int MaxScore;
-    private int RuleType;
-    private int ScoreNorth;
-    private int ScoreWest;
-    private int ScoreSouth;
-    private int ScoreEast;
+    private String tableid;
+    private int tablestatus;
+    private String north;
+    private String west;
+    private String south;
+    private String east;
+    private int maxscore;
+    private int ruletype;
+    private int scorenorth;
+    private int scorewest;
+    private int scoresouth;
+    private int scoreeast;
  
-    protected TableEntity(int tableStatus, String North, String West, String South, String East, int MaxScore, int RuleType, int ScoreNorth, int ScoreWest, int ScoreSouth, int ScoreEast) {
-        this.tableStatus = tableStatus;
-        this.North = North;
-        this.West = West;
-        this.South = South;
-        this.East = East;
-        this.MaxScore = MaxScore;
-        this.RuleType = RuleType;
-        this.ScoreNorth = ScoreNorth;
-        this.ScoreWest = ScoreWest;
-        this.ScoreSouth = ScoreSouth;
-        this.ScoreEast = ScoreEast;
+    protected TableEntity(int tablestatus, String north, String west, String south, String east, int maxscore, int ruletype, int scorenorth, int scorewest, int scoresouth, int scoreeast) {
+        this.tablestatus = tablestatus;
+        this.north = north;
+        this.west = west;
+        this.south = south;
+        this.east = east;
+        this.maxscore = maxscore;
+        this.ruletype = ruletype;
+        this.scorenorth = scorenorth;
+        this.scorewest = scorewest;
+        this.scoresouth = scoresouth;
+        this.scoreeast = scoreeast;
     }
  
     protected TableEntity() {
@@ -33,9 +33,9 @@ public class TableEntity {
 
     public String toJSON() {
         return "{ \"tableId\": \"" + getTableId() + "\", \"tableStatus\": " + getTableStatus()
-        + "\", \"North\": " + getNorth() + "\", \"West\": " + getWest() + "\", \"South\": " + getSouth() + "\", \"East\": " + getEast()
-        + "\", \"MaxScore\": " + getMaxScore() + "\", \"RuleType\": " + getRuleType()
-        + "\", \"ScoreNorth\": " + getScoreNorth() + "\", \"ScoreWest\": " + getScoreWest() + "\", \"ScoreSouth\": " + getScoreSouth() + "\", \"ScoreEast\": " + getScoreEast();
+        + ", \"North\": \"" + getNorth() + "\", \"West\": \"" + getWest() + "\", \"South\": \"" + getSouth() + "\", \"East\": \"" + getEast()
+        + "\", \"MaxScore\": " + getMaxScore() + ", \"RuleType\": " + getRuleType()
+        + ", \"ScoreNorth\": " + getScoreNorth() + ", \"ScoreWest\": " + getScoreWest() + ", \"ScoreSouth\": " + getScoreSouth() + ", \"ScoreEast\": " + getScoreEast() + "}";
     }
 
     @Override
@@ -45,74 +45,94 @@ public class TableEntity {
  
     // getters and setters...
     public String getTableId() {
-        return tableId;
+        return tableid;
+    }
+
+    public void setTableId(String set) {
+        tableid = set;
     }
 
     public int getTableStatus() {
-        return tableStatus;
+        return tablestatus;
     }
 
     public void setTableStatus(int set) {
-        tableStatus = set;
+        tablestatus = set;
     }
 
     public String getNorth() {
-        return North;
+        return north;
+    }
+
+    public void setNorth(String set) {
+        north = set;
     }
 
     public String getWest() {
-        return West;
+        return west;
+    }
+
+    public void setWest(String set) {
+        west = set;
     }
 
     public String getSouth() {
-        return South;
+        return south;
+    }
+
+    public void setSouth(String set) {
+        south = set;
     }
 
     public String getEast() {
-        return East;
+        return east;
+    }
+
+    public void setEast(String set) {
+        east = set;
     }
 
     public int getMaxScore() {
-        return MaxScore;
+        return maxscore;
     }
 
     public void setMaxScore(int set) {
-        MaxScore = set;
+        maxscore = set;
     }
 
     public int getRuleType() {
-        return RuleType;
+        return ruletype;
     }
 
     public int getScoreNorth() {
-        return ScoreNorth;
+        return scorenorth;
     }
 
     public void setScoreNorth(int set) {
-        ScoreNorth = set;
+        scorenorth = set;
     }
 
     public int getScoreWest() {
-        return ScoreWest;
+        return scorewest;
     }
 
     public void setScoreWest(int set) {
-        ScoreWest = set;
+        scorewest = set;
     }
 
     public int getScoreSouth() {
-        return ScoreSouth;
+        return scoresouth;
     }
 
     public void setScoreSouth(int set) {
-        ScoreSouth = set;
+        scoresouth = set;
     }
 
     public int getScoreEast() {
-        return ScoreEast;
+        return scoreeast;
     }
 
     public void setScoreEast(int set) {
-        ScoreEast = set;
+        scoreeast = set;
     }
 }
