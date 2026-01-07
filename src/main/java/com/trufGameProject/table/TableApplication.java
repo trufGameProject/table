@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -62,14 +62,14 @@ public class TableApplication {
 	}
 
 	@PostMapping("/table")
-	public String createTable(@RequestParam String tableId, @RequestParam int tableStatus) {
+	public String createTable(@RequestBody TableInfo table) {
 		String sql = "INSERT INTO myTable (tableId, tableStatus) VALUES (?, ?)";
-        int result = jdbcTemplate.update(sql, tableId, tableStatus);
+        int result = jdbcTemplate.update(sql, table.getTableId(), table.getTableStatus());
         
         if (result > 0) {
             System.out.println("Insert successfully.");
         }
-		return tableInfo(tableId);
+		return tableInfo(table.getTableId());
 	}
 
 	@DeleteMapping("/table/{id}")
@@ -78,18 +78,22 @@ public class TableApplication {
     	jdbcTemplate.update(sql, id);
 	}
 
-	// @PatchMapping("/table/{id}/position/{position}") 
-	// public void positionUpdate(@PathVariable String id, @PathVariable String position) {}
+	@PatchMapping("/table/{id}/position/{position}") 
+	public void positionUpdate(@PathVariable String id, @PathVariable String position, @RequestBody PId pid) {
+		String sql = "UPDATE myTable SET ";
+		if (position.equals("North")) {sql += "North = ? WHERE tableId = ?";}
+		else if (position.equals("West")) {sql += "West = ? WHERE tableId = ?";}
+		else if (position.equals("South")) {sql += "South = ? WHERE tableId = ?";}
+		else if (position.equals("East")) {sql += "East = ? WHERE tableId = ?";}
+		else {/* Error */}
+		jdbcTemplate.update(sql, pid.getPid(), id);
+	}
 
-	// @PatchMapping("/table/{id}/position/{tableStatus}") 
-	// public void positionUpdate(@PathVariable String id, @PathVariable int tableStatus) {
-		// String sql = "UPDATE myTable SET tableStatus = ? WHERE tableId = ?";
-        /* int result = jdbcTemplate.update(sql, tableId, tableStatus);
-        
-        if (result > 0) {
-            System.out.println("Insert successfully.");
-        }
-	} */
+	@PatchMapping("/table/{id}/status/{tableStatus}") 
+	public void statusUpdate(@PathVariable String id, @PathVariable int tableStatus) {
+		String sql = "UPDATE myTable SET tableStatus = ? WHERE tableId = ?";
+        jdbcTemplate.update(sql, tableStatus, id);
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(TableApplication.class, args);
