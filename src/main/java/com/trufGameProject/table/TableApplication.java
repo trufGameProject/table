@@ -33,13 +33,10 @@ public class TableApplication {
 	public String listTables() {
 		String sql = "SELECT * FROM myTable";
     
-		List<TableEntity> listTables = jdbcTemplate.query(sql,
-					BeanPropertyRowMapper.newInstance(TableEntity.class));
+		List<TableEntity> listTables = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(TableEntity.class));
 		String JSONString = "[";
 		for (TableEntity tables : listTables) {
-			if (!JSONString.equals("[")) {
-				JSONString += ", ";
-			}
+			if (!JSONString.equals("[")) {JSONString += ", ";}
 			JSONString += tables.toJSON();
 		}
 		JSONString += "]";
@@ -69,16 +66,16 @@ public class TableApplication {
 		String sql = "INSERT INTO myTable (tableId, tableStatus) VALUES (?, ?)";
         int result = jdbcTemplate.update(sql, table.getTableId(), table.getTableStatus());
         
-        if (result > 0) {
-            System.out.println("Insert successfully.");
-        }
+        if (result > 0) { System.out.println("Insert successfully.");}
 		return tableInfo(table.getTableId());
 	}
 
 	@DeleteMapping("/table/{id}")
-	public void tableDelete(@PathVariable String id) {
+	public ResponseEntity<?> tableDelete(@PathVariable String id) {
 		String sql = "DELETE FROM myTable WHERE tableId = ?";
-    	jdbcTemplate.update(sql, id);
+    	int delete = jdbcTemplate.update(sql, id);
+		if (delete == 0) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(Instant.now().toString(), 404,"Table not found", 2));}
+		else {return ResponseEntity.ok(new Error(Instant.now().toString(), 200, "Successful deletion", 1));}
 	}
 
 	@PatchMapping("/table/{id}/position/{position}") 
@@ -88,15 +85,19 @@ public class TableApplication {
 		else if (position.equals("West")) {sql += "West = ? WHERE tableId = ?";}
 		else if (position.equals("South")) {sql += "South = ? WHERE tableId = ?";}
 		else if (position.equals("East")) {sql += "East = ? WHERE tableId = ?";}
-		else {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(Instant.now().toString(), 404,"Invalid position. Please enter North, West, South, or East", 2));}
-		jdbcTemplate.update(sql, pid.getPid(), id);
+		else {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(Instant.now().toString(), 404,"Invalid position. Please enter North, West, South, or East", 3));}
+		int update = jdbcTemplate.update(sql, pid.getPid(), id);
+		if (update == 0) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(Instant.now().toString(), 404,"Table not found", 2));}
 		return ResponseEntity.ok(new Error(Instant.now().toString(), 200, "Successful input", 1));
 	}
 
 	@PatchMapping("/table/{id}/status/{tableStatus}") 
-	public void statusUpdate(@PathVariable String id, @PathVariable int tableStatus) {
+	public ResponseEntity<?> statusUpdate(@PathVariable String id, @PathVariable int tableStatus) {
+		if (tableStatus > 4 || tableStatus < 0) {return ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(new Error(Instant.now().toString(), 422,"Table status out of range (0-4)", 4));}
 		String sql = "UPDATE myTable SET tableStatus = ? WHERE tableId = ?";
-        jdbcTemplate.update(sql, tableStatus, id);
+        int update = jdbcTemplate.update(sql, tableStatus, id);
+		if (update == 0) {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(Instant.now().toString(), 404,"Table not found", 5));}
+		return ResponseEntity.ok(new Error(Instant.now().toString(), 200, "Successful update", 1));
 	}
 
 	public static void main(String[] args) {
