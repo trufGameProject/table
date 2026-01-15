@@ -1,10 +1,13 @@
 package com.trufGameProject.table;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -79,14 +82,15 @@ public class TableApplication {
 	}
 
 	@PatchMapping("/table/{id}/position/{position}") 
-	public void positionUpdate(@PathVariable String id, @PathVariable String position, @RequestBody PId pid) {
+	public ResponseEntity<?> positionUpdate(@PathVariable String id, @PathVariable String position, @RequestBody PId pid) {
 		String sql = "UPDATE myTable SET ";
 		if (position.equals("North")) {sql += "North = ? WHERE tableId = ?";}
 		else if (position.equals("West")) {sql += "West = ? WHERE tableId = ?";}
 		else if (position.equals("South")) {sql += "South = ? WHERE tableId = ?";}
 		else if (position.equals("East")) {sql += "East = ? WHERE tableId = ?";}
-		else {/* Error */}
+		else {return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error(Instant.now().toString(), 404,"Invalid position. Please enter North, West, South, or East", 2));}
 		jdbcTemplate.update(sql, pid.getPid(), id);
+		return ResponseEntity.ok(new Error(Instant.now().toString(), 200, "Successful input", 1));
 	}
 
 	@PatchMapping("/table/{id}/status/{tableStatus}") 
