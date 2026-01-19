@@ -13,6 +13,11 @@ public class Error {
         this.code = code;
     }
 
+    public String toJSON() {
+        return "{ \"Timestamp\": \"" + getTimestamp() + "\", \"Status\": " + getStatus()
+        + ", \"Error\": \"" + getError() + "\", \"Code\": " + getCode() + "}";
+    }
+
     public String getTimestamp() {
         return timestamp;
     }
